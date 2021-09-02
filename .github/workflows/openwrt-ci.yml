@@ -30,7 +30,7 @@ jobs:
           fetch-depth: 0
 
       - name: cache
-        uses: klever1988/cachewrtbuild@main
+        uses: fonlan/cachewrtbuild@main
         with: |
           ccache: 'true'
 
