@@ -52,7 +52,7 @@ jobs:
           ./scripts/feeds install -a
 
       - name: Generate configuration file
-        run:
+        run: |
           ls -l -a
           cat .config
           make defconfig
