@@ -53,10 +53,8 @@ jobs:
 
       - name: Generate configuration file
         run: |
-          ls -l -a
-          cat .config
+          tail -n 1 .config
           make defconfig
-          ls -l -a
 
       - name: Make download
         run: |
