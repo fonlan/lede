@@ -29,11 +29,6 @@ jobs:
           ref: master
           fetch-depth: 0
 
-      - name: Cache
-        uses: klever1988/cachewrtbuild@main
-        with:
-          ccache: 'true'
-
       - name: Space cleanup
         env:
           DEBIAN_FRONTEND: noninteractive
@@ -46,6 +41,11 @@ jobs:
           sudo -E apt-get -y autoremove --purge
           sudo -E apt-get clean
           df -h
+
+      - name: Cache
+        uses: klever1988/cachewrtbuild@main
+        with:
+          ccache: 'true'
 
       - name: Update feeds
         run: |
