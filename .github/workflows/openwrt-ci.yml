@@ -53,8 +53,10 @@ jobs:
 
       - name: Generate configuration file
         run: |
+          mv config.bak .config
           tail -n 1 .config
           make defconfig
+          tail -n 1 .config
 
       - name: Make download
         run: |
