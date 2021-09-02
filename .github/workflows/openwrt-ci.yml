@@ -78,7 +78,7 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ./bin/targets/x86/64/openwrt-x86-64-generic-squashfs-combined.img.gz
-          tag: ${{ github.ref }}
+          tag: $(date +"%Y.%m.%d-%H%M")
           file_glob: false
 
       - name: Delete workflow runs
