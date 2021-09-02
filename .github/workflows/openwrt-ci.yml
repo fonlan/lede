@@ -76,9 +76,10 @@ jobs:
       - name: Upload to release
         uses: svenstaro/upload-release-action@v2
         with:
+          echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ./bin/targets/x86/64/openwrt-x86-64-generic-squashfs-combined.img.gz
-          tag: $(date +"%Y.%m.%d-%H%M")
+          tag: ${{ env.FILE_DATE }}
           file_glob: false
 
       - name: Delete workflow runs
