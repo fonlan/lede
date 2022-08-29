@@ -8,9 +8,9 @@ PKG_LICENSE_FILES:=
 
 PKG_SOURCE_URL:=https://github.com/openwrt/mt76
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_DATE:=2022-07-03
-PKG_SOURCE_VERSION:=93e3fce916c62d06892d41bf00d0f4c2926c9a0b
-PKG_MIRROR_HASH:=ad966e7aa81301f0601ceb7aae2ecb471c452f5d8366f701add807152fd08971
+PKG_SOURCE_DATE:=2022-08-26
+PKG_SOURCE_VERSION:=5ec78e1ec43d1e39edfea1efb9fd4541fa004af0
+PKG_MIRROR_HASH:=b96ec5199d423dc27e4fe7f0e94c8d5970f6db812237816235f3b735a5cb216a
 
 PKG_MAINTAINER:=Felix Fietkau <nbd@nbd.name>
 PKG_USE_NINJA:=0
@@ -455,6 +455,8 @@ define KernelPackage/mt7921e/install
 	cp \
 		$(PKG_BUILD_DIR)/firmware/WIFI_MT7961_patch_mcu_1_2_hdr.bin \
 		$(PKG_BUILD_DIR)/firmware/WIFI_RAM_CODE_MT7961_1.bin \
+		$(PKG_BUILD_DIR)/firmware/WIFI_MT7922_patch_mcu_1_1_hdr.bin \
+		$(PKG_BUILD_DIR)/firmware/WIFI_RAM_CODE_MT7922_1.bin \
 		$(1)/lib/firmware/mediatek
 endef
 
