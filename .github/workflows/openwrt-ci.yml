@@ -50,8 +50,6 @@ jobs:
         run: |
           ./scripts/feeds update -a
           ./scripts/feeds install -a
-          rm -rf package/feeds/packages/mosdns
-          git clone https://github.com/sbwml/luci-app-mosdns package/mosdns
       - name: Generate configuration file
         run: |
           mv config.bak .config
