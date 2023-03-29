@@ -41,8 +41,8 @@ jobs:
           df -h
       - name: Update feeds
         run: |
-          # find ./ | grep Makefile | grep mosdns | xargs rm -f
-          # git clone -b v5-dev https://github.com/sbwml/luci-app-mosdns package/mosdns
+          find ./ | grep Makefile | grep mosdns | xargs rm -f
+          git clone -b v5 https://github.com/sbwml/luci-app-mosdns package/mosdns
           git clone https://github.com/fonlan/luci-app-poddns package/lean/luci-app-poddns
           ./scripts/feeds update -a
           ./scripts/feeds install -a
