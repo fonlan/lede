@@ -8,7 +8,7 @@ define Device/ariaboard_photonicat
   SOC := rk3568
   UBOOT_DEVICE_NAME := photonicat-rk3568
   IMAGE/sysupgrade.img.gz := boot-common | boot-script nanopi-r5s | pine64-img | gzip | append-metadata
-  DEVICE_PACKAGES := ath10k-firmware-qca9377-sdio kmod-ath10k kmod-ath10k-sdio pcat-manager
+  DEVICE_PACKAGES := ath10k-firmware-qca9377-sdio kmod-ath10k kmod-ath10k-sdio pcat-manager wpad
 endef
 TARGET_DEVICES += ariaboard_photonicat
 
@@ -46,7 +46,7 @@ define Device/hinlink_common
   DEVICE_VENDOR := HINLINK
   UBOOT_DEVICE_NAME := opc-h68k-rk3568
   IMAGE/sysupgrade.img.gz := boot-common | boot-script nanopi-r5s | pine64-img | gzip | append-metadata
-  DEVICE_PACKAGES := kmod-ata-ahci-platform kmod-mt7921e kmod-r8125 kmod-usb-serial-cp210x wpad-openssl
+  DEVICE_PACKAGES := kmod-ata-ahci-platform kmod-hwmon-pwmfan kmod-mt7921e kmod-r8125 wpad-openssl
 endef
 
 define Device/hinlink_opc-h66k
@@ -169,6 +169,16 @@ define Device/firefly_station-p2
   DEVICE_PACKAGES := kmod-brcmfmac kmod-ikconfig kmod-ata-ahci-platform station-p2-firmware wpad-openssl
 endef
 TARGET_DEVICES += firefly_station-p2
+
+define Device/firefly_station-m2
+  DEVICE_VENDOR := Firefly
+  DEVICE_MODEL := Station M2
+  DEVICE_DTS := rockchip/rk3566-roc-pc
+  UBOOT_DEVICE_NAME := station-m2-rk3566
+  IMAGE/sysupgrade.img.gz := boot-common | boot-script nanopi-r5s | pine64-img | gzip | append-metadata
+  DEVICE_PACKAGES := kmod-brcmfmac kmod-ikconfig kmod-ata-ahci-platform station-m2-firmware wpad-openssl
+endef
+TARGET_DEVICES += firefly_station-m2
 
 define Device/pine64_rockpro64
   DEVICE_VENDOR := Pine64
