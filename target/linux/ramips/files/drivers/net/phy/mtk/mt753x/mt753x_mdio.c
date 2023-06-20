@@ -6,6 +6,7 @@
 
 #include <linux/kernel.h>
 #include <linux/module.h>
+#include <linux/version.h>
 #include <linux/init.h>
 #include <linux/device.h>
 #include <linux/delay.h>
@@ -287,8 +288,13 @@ static void mt753x_load_port_cfg(struct gsw_mt753x *gsw)
 
 		port_cfg->np = port_np;
 
-		ret = of_get_phy_mode(port_np, &port_cfg->phy_mode);
-		if (ret < 0) {
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 10, 0)
+		port_cfg->phy_mode = of_get_phy_mode(port_np);
+		if (port_cfg->phy_mode < 0) {
+#else
+		of_get_phy_mode(port_np, &port_cfg->phy_mode);
+		if (port_cfg->phy_mode == PHY_INTERFACE_MODE_NA) {
+#endif
 			dev_info(gsw->dev, "incorrect phy-mode %d\n", port);
 			continue;
 		}
@@ -546,7 +552,7 @@ static int mt753x_hw_reset(struct gsw_mt753x *gsw)
 
 	return 0;
 }
-#if 1 //XDXDXDXD
+
 static int mt753x_mdio_read(struct mii_bus *bus, int addr, int reg)
 {
 	struct gsw_mt753x *gsw = bus->priv;
@@ -589,8 +595,11 @@ static void mt753x_connect_internal_phys(struct gsw_mt753x *gsw,
 {
 	struct device_node *phy_np;
 	struct mt753x_phy *phy;
-	phy_interface_t iface;
-	int ret;
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 10, 0)
+	int phy_mode;
+#else
+	phy_interface_t phy_mode = PHY_INTERFACE_MODE_NA;
+#endif
 	u32 phyad;
 
 	if (!mii_np)
@@ -603,8 +612,13 @@ static void mt753x_connect_internal_phys(struct gsw_mt753x *gsw,
 		if (phyad >= MT753X_NUM_PHYS)
 			continue;
 
-		ret = of_get_phy_mode(phy_np, &iface);
-		if (ret < 0) {
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 10, 0)
+		phy_mode = of_get_phy_mode(phy_np);
+		if (phy_mode < 0) {
+#else
+		of_get_phy_mode(phy_np, &phy_mode);
+		if (phy_mode == PHY_INTERFACE_MODE_NA) {
+#endif
 			dev_info(gsw->dev, "incorrect phy-mode %d for PHY %d\n",
 				 iface, phyad);
 			continue;
@@ -679,6 +693,9 @@ static int mt753x_mdio_register(struct gsw_mt753x *gsw)
 	ret = of_mdiobus_register(gsw->gphy_bus, mii_np);
 
 	if (ret) {
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 9, 0)
+		devm_mdiobus_free(gsw->dev, gsw->gphy_bus);
+#endif
 		gsw->gphy_bus = NULL;
 	} else {
 		if (gsw->phy_status_poll)
@@ -691,30 +708,6 @@ err_put_node:
 
 	return ret;
 }
-#endif
-
-#ifdef MT7988_FPGA
-u32 mt753x_direct_read(u32 reg)
-{
-	struct gsw_mt753x *gsw = mt753x_get_first_gsw();
-
-	if (gsw)
-		return mt753x_reg_read(gsw, reg);
-	else
-		return 0;
-}
-EXPORT_SYMBOL(mt753x_direct_read);
-
-void mt753x_direct_write(u32 reg, u32 value)
-{
-	struct gsw_mt753x *gsw = mt753x_get_first_gsw();
-
-	if (gsw) {
-		mt753x_reg_write(gsw, reg, value);
-	}
-}
-EXPORT_SYMBOL(mt753x_direct_write);
-#endif
 
 static irqreturn_t mt753x_irq_handler(int irq, void *dev)
 {
@@ -830,10 +823,8 @@ static int mt753x_probe(struct platform_device *pdev)
 						     "mediatek,phy-poll");
 
 	mt753x_add_gsw(gsw);
-#if 1 //XDXD
-	mt753x_mdio_register(gsw);
-#endif
 
+	mt753x_mdio_register(gsw);
 	mt753x_swconfig_init(gsw);
 
 	if (sw->post_init)
@@ -864,11 +855,9 @@ static int mt753x_remove(struct platform_device *pdev)
 	mt753x_swconfig_destroy(gsw);
 #endif
 
-#if 1 //XDXD
 	mt753x_disconnect_internal_phys(gsw);
 
 	mdiobus_unregister(gsw->gphy_bus);
-#endif
 
 	mt753x_remove_gsw(gsw);
 
