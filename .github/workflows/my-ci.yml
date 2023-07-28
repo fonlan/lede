@@ -44,7 +44,7 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
           find ./ | grep Makefile | grep mosdns | xargs rm -f
-          git clone -b v5 https://github.com/fonlan/luci-app-mosdns package/mosdns
+          git clone -b v5 https://github.com/sbwml/luci-app-mosdns package/mosdns
           git clone https://github.com/fonlan/luci-app-poddns package/lean/luci-app-poddns
       - name: Generate configuration file
         run: |
