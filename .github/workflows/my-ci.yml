@@ -46,6 +46,7 @@ jobs:
           find ./ | grep Makefile | grep mosdns | xargs rm -f
           git clone -b v5 https://github.com/sbwml/luci-app-mosdns package/mosdns
           git clone https://github.com/fonlan/luci-app-poddns package/lean/luci-app-poddns
+          git clone https://github.com/fonlan/autoban package/autoban
           find ./ | grep Makefile | grep luci-theme-argon | xargs rm -f
           git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/lean/luci-theme-argon
       - name: Generate configuration file

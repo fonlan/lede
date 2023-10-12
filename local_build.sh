@@ -20,5 +20,10 @@ if [ -d package/lean/luci-theme-argon ]; then
 fi
 git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/lean/luci-theme-argon
 
+if [ -d package/autoban ]; then
+    rm -rf package/autoban
+fi
+git clone https://github.com/fonlan/autoban package/autoban
+
 make defconfig
 make -j$(nproc) V=s
