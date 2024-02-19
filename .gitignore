@@ -30,3 +30,8 @@ git-src
 .cproject
 .ccache
 .vscode*
+.history/
+package/autoban/
+package/lean/luci-theme-argon/
+package/lean/luci-app-poddns/
+package/mosdns/

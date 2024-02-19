@@ -18,7 +18,7 @@ Signed-off-by: Felix Fietkau <nbd@nbd.name>
  
  config DMA_SHARED_BUFFER
 -	bool
-+	tristate
++	tristate "DMA_SHARED_BUFFER"
  	default n
  	select IRQ_WORK
  	help
